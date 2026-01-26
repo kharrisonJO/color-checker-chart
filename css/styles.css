@@ -1,0 +1,91 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+h1 {
+  color: #333;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 12px;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+}
+
+.header-col {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-align: left;
+  position: sticky;
+  left: 0;
+  z-index: 10;
+}
+
+.pass-aa {
+  background-color: #d4edda;
+}
+
+.pass-aaa {
+  background-color: #28a745;
+  color: white;
+}
+
+.fail {
+  background-color: #f8d7da;
+}
+
+.color-swatch {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #000;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+.legend {
+  margin: 20px 0;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+
+.legend-item {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.legend-badge {
+  padding: 2px 8px;
+}
+
+.legend-badge-aaa {
+  background: #28a745;
+  color: white;
+}
+
+.legend-badge-aa {
+  background: #d4edda;
+}
+
+.legend-badge-fail {
+  background: #f8d7da;
+}

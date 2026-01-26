@@ -5,82 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WCAG Contrast Ratio Table</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 100%;
-      overflow-x: auto;
-    }
-
-    h1 {
-      color: #333;
-    }
-
-    table {
-      border-collapse: collapse;
-      margin: 20px 0;
-      font-size: 12px;
-      width: 100%;
-    }
-
-    th,
-    td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #f2f2f2;
-      font-weight: bold;
-      position: sticky;
-      top: 0;
-    }
-
-    .header-col {
-      background-color: #f2f2f2;
-      font-weight: bold;
-      text-align: left;
-      position: sticky;
-      left: 0;
-      z-index: 10;
-    }
-
-    .pass-aa {
-      background-color: #d4edda;
-    }
-
-    .pass-aaa {
-      background-color: #28a745;
-      color: white;
-    }
-
-    .fail {
-      background-color: #f8d7da;
-    }
-
-    .color-swatch {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 1px solid #000;
-      vertical-align: middle;
-      margin-right: 5px;
-    }
-
-    .legend {
-      margin: 20px 0;
-      padding: 10px;
-      background-color: #f9f9f9;
-      border: 1px solid #ddd;
-    }
-
-    .legend-item {
-      display: inline-block;
-      margin-right: 20px;
-    }
-  </style>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -88,11 +13,9 @@
 
   <div class="legend">
     <strong>Legend:</strong>
-    <div class="legend-item"><span style="background: #28a745; color: white; padding: 2px 8px;">AAA</span> ≥ 7:1 (AAA
-      Normal Text)</div>
-    <div class="legend-item"><span style="background: #d4edda; padding: 2px 8px;">AA</span> ≥ 4.5:1 (AA Normal Text)
-    </div>
-    <div class="legend-item"><span style="background: #f8d7da; padding: 2px 8px;">Fail</span> &lt; 4.5:1</div>
+    <div class="legend-item"><span class="legend-badge legend-badge-aaa">AAA</span> ≥ 7:1 (AAA Normal Text)</div>
+    <div class="legend-item"><span class="legend-badge legend-badge-aa">AA</span> ≥ 4.5:1 (AA Normal Text)</div>
+    <div class="legend-item"><span class="legend-badge legend-badge-fail">Fail</span> &lt; 4.5:1</div>
   </div>
   <div>
     <p>WCAG 2.0 level AA requires a contrast ratio of at least 4.5:1 for normal text and 3:1 for large text. WCAG 2.1
