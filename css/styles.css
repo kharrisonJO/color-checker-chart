@@ -1,5 +1,6 @@
 body {
   font-family: Arial, sans-serif;
+  font-size: 1.4rem;
   padding: 20px;
   max-width: 100%;
   overflow-x: auto;
@@ -12,7 +13,7 @@ h1 {
 table {
   border-collapse: collapse;
   margin: 20px 0;
-  font-size: 12px;
+  font-size: 1.2rem;
   width: 100%;
 }
 
@@ -88,4 +89,14 @@ th {
 
 .legend-badge-fail {
   background: #f8d7da;
+}
+
+.orange {
+  font-weight: bold;
+  color: #f78e1e;
+}
+
+a {
+  display: block;
+  margin: 2rem 0;
 }
