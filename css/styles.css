@@ -3,18 +3,30 @@ body {
   font-size: 1.2rem;
   padding: 20px;
   max-width: 100%;
+}
+
+.table-scroll {
   overflow-x: auto;
 }
 
 h1 {
+  font-size: 2rem;
   color: #333;
+}
+
+h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+}
+
+.intro {
+  max-width: 1000px;
 }
 
 table {
   border-collapse: collapse;
   margin: 20px 0;
   font-size: 1.2rem;
-  width: 100%;
 }
 
 th,
@@ -63,10 +75,11 @@ th {
 }
 
 .legend {
-  margin: 20px 0;
-  padding: 10px;
+  margin: 2rem 0 3rem;
+  padding: 1rem;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
+  width: fit-content;
 }
 
 .legend-item {
@@ -94,6 +107,7 @@ th {
 .orange {
   font-weight: bold;
   color: #f78e1e;
+  padding: 1rem 0 2rem;
 }
 
 a {
