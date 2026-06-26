@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WCAG Contrast Ratio Table</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+  <div class="intro">
+    <h1>WCAG Contrast Ratios for Freeway Ride</h1>
+    <p>WCAG 2.1/2.2 color compliance requires a minimum contrast ratio of 4.5:1 for normal text and 3:1 for large text
+      (18pt+/24px+ or 14pt+/18.5px+ bold) to meet Level AA, which is the standard for web accessibility. For higher,
+      stricter AAA compliance, ratios of 7:1 (normal) and 4.5:1 (large) are required.</p>
+    <p>Large text is defined as 14 point (typically 18.66px) and bold or larger, or 18 point (typically 24px) or larger.
+    </p>
+  </div>
+  <div class="legend">
+    <strong>Legend:</strong>
+    <div class="legend-item"><span class="legend-badge legend-badge-aaa">AAA</span> ≥ 7:1 (AAA Normal Text)</div>
+    <div class="legend-item"><span class="legend-badge legend-badge-aa">AA</span> ≥ 4.5:1 (AA Normal Text)</div>
+    <div class="legend-item"><span class="legend-badge legend-badge-fail">Fail</span> &lt; 4.5:1</div>
+  </div>
+  <div class="nav-links">
+    <a href="./index.html"><strong>Back to overview</strong></a>
+  </div>
+  <div id="tables"></div>
+
+  <script>
+    const primaryColors = {
+      'Orange': 'CB4C26',
+      'Cream': 'F8F1E8',
+      'Yellow': 'EF9C3D',
+      'Green': '36564D',
+      'Sage': 'B8BFA5',
+      'Teal': '426F76',
+      'Dark Teal': 'FF8C27',
+      'Charcoal': '141718',
+      'Brown': '6D370A',
+      'White': 'FFFFFF'
+    };
+
+
+
+    function hexToRgb(hex) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) {
+        hex = hex.split('').map(c => c + c).join('');
+      }
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
+      return { r, g, b };
+    }
+
+    function getLuminance(hex) {
+      const rgb = hexToRgb(hex);
+      const [r, g, b] = [rgb.r, rgb.g, rgb.b].map(val => {
+        val = val / 255;
+        return val <= 0.03928 ? val / 12.92 : Math.pow((val + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    }
+
+    function getContrastRatio(hex1, hex2) {
+      const lum1 = getLuminance(hex1);
+      const lum2 = getLuminance(hex2);
+      const lighter = Math.max(lum1, lum2);
+      const darker = Math.min(lum1, lum2);
+      return (lighter + 0.05) / (darker + 0.05);
+    }
+
+    function getContrastClass(ratio) {
+      if (ratio >= 7) return 'pass-aaa';
+      if (ratio >= 4.5) return 'pass-aa';
+      return 'fail';
+    }
+
+    function createColorVariations(colors) {
+      const variations = {};
+
+      for (const [name, hex] of Object.entries(colors)) {
+        const normalizedHex = hex.toUpperCase().replace('#', '');
+
+        if (normalizedHex === 'FFFFFF') {
+          variations[name] = hex;
+        } else {
+          variations[`${name} (100%)`] = hex;
+        }
+      }
+
+      return variations;
+    }
+
+    function createContrastTable(colors, title) {
+      const allColors = createColorVariations(colors);
+      const colorNames = Object.keys(allColors);
+
+      let html = `<h3>${title}</h3>`;
+      html += '<div class="table-scroll"><table>';
+      html += '<tr><th>Hex Values</th>';
+
+      for (const name of colorNames) {
+        html += `<th>${name}<br><span class="color-swatch" style="background: #${allColors[name]}"></span>#${allColors[name]}</th>`;
+      }
+      html += '</tr>';
+
+      for (const bgName of colorNames) {
+        html += '<tr>';
+        html += `<td class="header-col">${bgName}<br><span class="color-swatch" style="background: #${allColors[bgName]}"></span>#${allColors[bgName]}</td>`;
+
+        for (const fgName of colorNames) {
+          const ratio = getContrastRatio(allColors[bgName], allColors[fgName]);
+          const className = getContrastClass(ratio);
+          html += `<td class="${className}">${ratio.toFixed(2)}</td>`;
+        }
+
+        html += '</tr>';
+      }
+
+      html += '</table></div><p class="scroll-hint">Scroll to see more →</p>';
+
+      return html;
+    }
+
+    document.getElementById('tables').innerHTML =
+      createContrastTable(primaryColors, 'Brand Colors 2026')
+  </script>
+</body>
+
+</html>
