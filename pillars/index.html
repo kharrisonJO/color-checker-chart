@@ -5,13 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>WCAG Contrast Ratio Table — With Tints</title>
+  <title>WCAG Contrast Ratio Table</title>
   <link rel="stylesheet" href="../css/styles.css">
 </head>
 
 <body>
   <div class="intro">
-    <h1>WCAG Contrast Ratios for Gimme Brand Tint Colors 2026</h1>
+    <h1>WCAG Contrast Ratios for Pillars Yogurt</h1>
     <p>WCAG 2.1/2.2 color compliance requires a minimum contrast ratio of 4.5:1 for normal text and 3:1 for large text
       (18pt+/24px+ or 14pt+/18.5px+ bold) to meet Level AA, which is the standard for web accessibility. For higher,
       stricter AAA compliance, ratios of 7:1 (normal) and 4.5:1 (large) are required.</p>
@@ -32,22 +32,30 @@
   <div id="tables"></div>
 
   <script>
-    const hiddenColors = ['Forest Green'];
-
     const primaryColors = {
-      'Forest Green': '004F51',
-      'Blue': '0CC2E1',
-      'Green': '00B537',
-      'Lime': '92D600',
-      'Olive': 'A5B90D',
-      'Yellow': 'FFB600',
-      'Orange': 'FF8C27',
-      'Purple': 'E578D6',
-      'Magenta': 'ED3270',
-      'Red': 'F43C2D',
-      'Brown': '731D05',
-      'White': 'FFFFFF'
+      'Purple': '7a5393',
+      'Lt Grey': 'f3f3f3',
+      'White': 'FFFFFF',
+      'Navy': '252a36',
+      'Mango Icon': 'f18a00',
+      'Mango Text': 'f2c38b',
+      'Coconut Icon': '00adbb',
+      'Coconut Text': 'a3dbdf',
+      'Berry Icon': '715091',
+      'Berry Text': 'b095d3',
+      'Peach Icon': 'd45956',
+      'Peach Text': 'f9b2b2',
+      'Raspberry Icon': 'd50057',
+      'Raspberry Text': 'f79fbf',
+      'Strawberry Icon': 'c70016',
+      'Strawberry Text': 'f78b90',
+      'Straw Banana Icon': 'd40019',
+      'Straw Banana Text': 'f4b0bc',
+      'Vanilla Icon': 'aa6c11',
+      'Vanilla Text': 'efc389'
     };
+
+
 
     function hexToRgb(hex) {
       hex = hex.replace('#', '');
@@ -58,18 +66,6 @@
       const g = parseInt(hex.slice(2, 4), 16);
       const b = parseInt(hex.slice(4, 6), 16);
       return { r, g, b };
-    }
-
-    function rgbToHex(r, g, b) {
-      return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
-    }
-
-    function getTint(hex, percentage) {
-      const rgb = hexToRgb(hex);
-      const r = Math.round(rgb.r + (255 - rgb.r) * (percentage / 100));
-      const g = Math.round(rgb.g + (255 - rgb.g) * (percentage / 100));
-      const b = Math.round(rgb.b + (255 - rgb.b) * (percentage / 100));
-      return rgbToHex(r, g, b);
     }
 
     function getLuminance(hex) {
@@ -95,32 +91,41 @@
       return 'fail';
     }
 
-    function createTintComparisonTable(subjectHex, subjectName, colors, title) {
-      const tints = [
-        [`${subjectName} (100%)`, subjectHex],
-        [`${subjectName} (75%)`, getTint(subjectHex, 25)],
-        [`${subjectName} (50%)`, getTint(subjectHex, 50)],
-        [`${subjectName} (25%)`, getTint(subjectHex, 75)],
-        [`${subjectName} (10%)`, getTint(subjectHex, 90)],
-      ];
+    function createColorVariations(colors) {
+      const variations = {};
 
-      const primaryNames = Object.keys(colors);
+      for (const [name, hex] of Object.entries(colors)) {
+        const normalizedHex = hex.toUpperCase().replace('#', '');
+
+        if (normalizedHex === 'FFFFFF') {
+          variations[name] = hex;
+        } else {
+          variations[`${name} (100%)`] = hex;
+        }
+      }
+
+      return variations;
+    }
+
+    function createContrastTable(colors, title) {
+      const allColors = createColorVariations(colors);
+      const colorNames = Object.keys(allColors);
 
       let html = `<h3>${title}</h3>`;
       html += '<div class="table-scroll"><table>';
       html += '<tr><th>Hex Values</th>';
 
-      for (const name of primaryNames) {
-        html += `<th>${name}<br><span class="color-swatch" style="background: #${colors[name]}"></span>#${colors[name]}</th>`;
+      for (const name of colorNames) {
+        html += `<th>${name}<br><span class="color-swatch" style="background: #${allColors[name]}"></span>#${allColors[name]}</th>`;
       }
       html += '</tr>';
 
-      for (const [tintName, tintHex] of tints) {
+      for (const bgName of colorNames) {
         html += '<tr>';
-        html += `<td class="header-col">${tintName}<br><span class="color-swatch" style="background: #${tintHex}"></span>#${tintHex}</td>`;
+        html += `<td class="header-col">${bgName}<br><span class="color-swatch" style="background: #${allColors[bgName]}"></span>#${allColors[bgName]}</td>`;
 
-        for (const primaryName of primaryNames) {
-          const ratio = getContrastRatio(tintHex, colors[primaryName]);
+        for (const fgName of colorNames) {
+          const ratio = getContrastRatio(allColors[bgName], allColors[fgName]);
           const className = getContrastClass(ratio);
           html += `<td class="${className}">${ratio.toFixed(2)}</td>`;
         }
@@ -129,15 +134,12 @@
       }
 
       html += '</table></div><p class="scroll-hint">Scroll to see more →</p>';
+
       return html;
     }
 
-    document.getElementById('tables').innerHTML = Object.entries(primaryColors)
-      .filter(([name, hex]) => hex.toUpperCase() !== 'FFFFFF' && !hiddenColors.includes(name))
-      .map(([name, hex]) =>
-        createTintComparisonTable(hex, name, primaryColors, `${name} Tints vs Primary Colors`)
-      )
-      .join('');
+    document.getElementById('tables').innerHTML =
+      createContrastTable(primaryColors, 'Brand Colors 2026')
   </script>
 </body>
 
